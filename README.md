@@ -29,7 +29,7 @@ FashionChameleon: Towards Real-Time and Interactive Human-Garment Video Customiz
 ## 🎉 News
 
 
-## 📖 Insight
+## ✨ Insight
 
 
 
@@ -42,7 +42,7 @@ FashionChameleon: Towards Real-Time and Interactive Human-Garment Video Customiz
 
 
 
-## 🌊 More Application
+## 🌊 Application
 <!-- <img src="assets/combination.png" style="width:100%; height:100%;"/> -->
 
 
