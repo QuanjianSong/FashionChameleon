@@ -29,12 +29,15 @@ FashionChameleon: Towards Real-Time and Interactive Human-Garment Video Customiz
 ## 🎉 News
 
 
+## 📖 Insight
+
+
 
 ## 🎬 Overview
 
 
 
-## 🌈 Comparison with Existing Methods
+## 🌈 Comparison
 <!-- <img src="assets/comparison.png" style="width:100%; height:100%;"/> -->
 
 
