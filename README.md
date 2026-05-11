@@ -1,6 +1,6 @@
 <div align="center">
 <h1>
-LightMotion: A Light and Tuning-free Method for Simulating Camera Motion in Video Generation
+FashionChameleon: Towards Real-Time and Interactive Human-Garment Video Customization
 </h1>
 
 </div>
