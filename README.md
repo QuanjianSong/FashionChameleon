@@ -1,5 +1,6 @@
 <div align="center">
 <h1>
+<img src="assets/fashionchameleon.png" width="40" style="vertical-align: middle;" />
 FashionChameleon: Towards Real-Time and Interactive Human-Garment Video Customization
 </h1>
 
