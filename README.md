@@ -40,14 +40,11 @@ It achieves real-time generation at 23.8 FPS on a single GPU.
 
 ## ✨ Highlight
 > **1. Interactive Customization.** We train a single-garment switching teacher using tailored I2V priors and mismatched reference–garment pairs. During generation, we introduce KV-cache rescheduling to enable interactive multi-garment customization without requiring video data containing multi-garment switching.
-</div>
 
-> **Gradient-Reweighted DMD.** Traditional self-forcing treats all self-rolled frames equally during DMD backpropagation. However, later frames typically suffer from larger quality degradation and thus require stronger gradient supervision. We dynamically reweight DMD gradients during self-rolling using a reward model to improve extrapolation consistency.
-</div>
+> **2. Gradient-Reweighted DMD.** Traditional self-forcing treats all self-rolled frames equally during DMD backpropagation. However, later frames typically suffer from larger quality degradation and thus require stronger gradient supervision. We dynamically reweight DMD gradients during self-rolling using a reward model to improve extrapolation consistency.
 
-> **Real-Time Generation.** Through streaming distillation with in-context learning, FashionChameleon achieves 23.8 FPS for 720p generation on a single H200 GPU, 30–180× faster than existing customization methods.
-</div>
-
+> **3. Real-Time Generation.** Through streaming distillation with in-context learning, FashionChameleon achieves 23.8 FPS for 720p generation on a single H200 GPU, 30–180× faster than existing customization methods.
+<img src="assets/intro.png" style="width:100%; height:100%;"/>
 
 
 ## 🎬 Overview
