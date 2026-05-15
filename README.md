@@ -37,9 +37,10 @@ It achieves real-time generation at 23.8 FPS on a single GPU.
 
 
 ## 🎉 News
+<pre>
 • <strong>2026.5</strong>: 🔥 Our project page has been released.
 • <strong>2026.5</strong>: 🔥 Our technical report has been released.
-
+</pre>
 
 ## ✨ Highlight
 > **1. Interactive Customization.** We train a single-garment switching teacher using tailored I2V priors and mismatched reference–garment pairs. During generation, we introduce KV-cache rescheduling to enable interactive multi-garment customization without requiring video data containing multi-garment switching.
