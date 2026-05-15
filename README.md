@@ -36,6 +36,8 @@ It achieves real-time generation at 23.8 FPS on a single GPU.
 
 
 ## 🎉 News
+• <strong>2026.5</strong>: 🔥 Our project page has been released.
+• <strong>2026.5</strong>: 🔥 Our technical report has been released.
 
 
 ## ✨ Highlight
