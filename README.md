@@ -52,7 +52,7 @@ It achieves real-time generation at 23.8 FPS on a single GPU.
 
 </div>
 
-<strong>3. Real-Time Generation.</strong> Through streaming distillation with in-context learning, FashionChameleon achieves 23.8 FPS for 720p generation on a single H200 GPU, 30–150× faster than existing customization methods.
+<strong>3. Real-Time Generation.</strong> Through streaming distillation with in-context learning, FashionChameleon achieves 23.8 FPS for 720p generation on a single H200 GPU, 30–180× faster than existing customization methods.
 
 
 ## 🎬 Overview
