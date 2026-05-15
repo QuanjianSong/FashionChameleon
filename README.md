@@ -39,8 +39,10 @@ It achieves real-time generation at 23.8 FPS on a single GPU.
 
 
 ## ✨ Highlight
-<div align="center">
-<strong>1. Interactive Customization.</strong> We first train a single-garment switching teacher using tailored I2V priors and mismatched reference–garment pairs. During autoregressive generation, we introduce KV-cache rescheduling to enable interactive multi-garment customization without requiring video data containing multi-garment switching.
+<div align="center" style="text-align: justify; max-width: 1000px; margin: 0 auto;">
+
+**1. <strong>Interactive Customization.</strong>** We first train a single-garment switching teacher using tailored I2V priors and mismatched reference–garment pairs. During autoregressive generation, we introduce KV-cache rescheduling to enable interactive multi-garment customization without requiring video data containing multi-garment switching.
+
 </div>
 
 > **2. Gradient-Reweighted DMD.** Traditional self-forcing treats all self-rolled frames equally during DMD backpropagation. However, later frames typically suffer from larger quality degradation and thus require stronger gradient supervision. We dynamically reweight DMD gradients during self-rolling using a reward model to improve extrapolation consistency.
