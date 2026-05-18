@@ -6,8 +6,8 @@ FashionChameleon: Towards Real-Time and Interactive Human-Garment Video Customiz
 
 <p align="center">
     <span>
-        <a href="" target="_blank"> 
-        <img src='' alt='Paper PDF'></a> &emsp;  &emsp; 
+        <a href="https://arxiv.org/pdf/2605.15824" target="_blank"> 
+        <img src='https://img.shields.io/badge/2605.15824-FashionChameleon-red' alt='Paper PDF'></a> &emsp;  &emsp; 
     </span>
     <span> 
         <a href='https://quanjiansong.github.io/projects/FashionChameleon' target="_blank">
@@ -36,11 +36,13 @@ It achieves real-time generation at 23.8 FPS on a single GPU.
 </div>
 
 
-## 🎉 News
-<pre>
-• <strong>2026.05</strong>: 🔥 Our project page has been released.
-• <strong>2026.05</strong>: 🔥 Our technical report has been released.
-</pre>
+## 📅 Todo
+- [ ] Release the training and inference code of student model.
+- [ ] Release the training and inference code of teacher model.
+- [ ] Release the HGC-Bench.
+- [x] 🔥 Release the project page.
+- [x] 🔥 Release the technical report.
+
 
 ## ✨ Highlight
 > **1. Interactive Customization.** We train a single-garment switching teacher using tailored I2V priors and mismatched reference–garment pairs. During generation, we introduce KV-cache rescheduling to enable interactive multi-garment customization without requiring video data containing multi-garment switching.
