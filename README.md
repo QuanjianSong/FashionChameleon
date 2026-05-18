@@ -42,8 +42,8 @@ It achieves real-time generation at 23.8 FPS on a single GPU.
 - [ ] Release the code of post-training.
 - [ ] Release the code of pre-training.
 - [ ] Release the HGC-Bench.
-- [x] 🔥 Release the project page.
-- [x] 🔥 Release the technical report.
+- [x] 🔥 Release the <a href="https://quanjiansong.github.io/projects/FashionChameleon/" target="_blank">project page</a>.
+- [x] 🔥 Release the <a href="https://arxiv.org/pdf/2605.15824" target="_blank">technical report</a>.
 
 
 ## ✨ Highlight
