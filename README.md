@@ -13,6 +13,7 @@ FashionChameleon: Towards Real-Time and Interactive Human-Garment Video Customiz
         <a href='https://quanjiansong.github.io/projects/FashionChameleon' target="_blank">
         <img src='https://img.shields.io/badge/Project_Page-FashionChameleon-green' alt='Project Page'></a>  &emsp;  &emsp;
     </span>
+    <br>
     <span> 
         <a href='' target="_blank"> 
         <img src='https://img.shields.io/badge/Hugging_Face-FashionChameleon-blue' alt='Hugging Face'></a> &emsp;  &emsp;
