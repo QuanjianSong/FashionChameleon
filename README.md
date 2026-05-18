@@ -38,8 +38,9 @@ It achieves real-time generation at 23.8 FPS on a single GPU.
 
 
 ## 📅 Todo
-- [ ] Release the training and inference code of student model.
-- [ ] Release the training and inference code of teacher model.
+- [ ] Release the checkpoint.
+- [ ] Release the code of post-training.
+- [ ] Release the code of pre-training.
 - [ ] Release the HGC-Bench.
 - [x] 🔥 Release the project page.
 - [x] 🔥 Release the technical report.
