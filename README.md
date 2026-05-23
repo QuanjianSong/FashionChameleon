@@ -74,5 +74,10 @@ Human-centric video customization, particularly at the garment level, has shown 
 ## 🎓 Bibtex
 🤗 If you find this code helpful for your research, please cite:
 ```
-XXX
+@article{song2026fashionchameleon,
+  title={FashionChameleon: Towards Real-Time and Interactive Human-Garment Video Customization},
+  author={Song, Quanjian and Shen, Yefeng and Chen, Mengting and Sun, Hao and Lan, Jinsong and Zhu, Xiaoyong and Zheng, Bo and Cao, Liujuan},
+  journal={arXiv preprint arXiv:2605.15824},
+  year={2026}
+}
 ```
