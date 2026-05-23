@@ -57,7 +57,7 @@ It achieves real-time generation at 23.8 FPS on a single GPU.
 
 
 ## 🎬 Overview
-Human-centric video customization, particularly at the garment level, has shown significant commercial value. However, existing approaches cannot support low-latency and interactive garment control, which is crucial for applications such as e-commerce and content creation. This paper studies how to achieve interactive multi-garment video customization while preserving motion coherence using only single-garment video data. We present FashionChameleon, a real-time and interactive framework for human-garment customization in autoregressive video generation, where users can interactively switch garment during generation. FashionChameleon consists of three key techniques: (i) Instead of training on multi-garment video data, we train a Teacher Model with In-Context Learning on a single reference–garment pair. By retaining the image-to-video training paradigm while enforcing a mismatch between the reference and garment image, the model is encouraged to implicitly preserve coherence during single-garment switching. (ii) To achieve consistency and efficiency during generation, we introduce Streaming Distillation with In-Context Learning, which fine-tunes the model with in-context teacher forcing and improves extrapolation consistency via gradient-reweighted distribution matching distillation. (iii) To extend the model for interactive multi-garment video customization, we propose Training-Free KV Cache Rescheduling, which includes garment KV refresh, historical KV withdraw, and reference KV disentangle to achieve garment switching while preserving motion coherence. Our FashionChameleon uniquely supports interactive customization and consistent long-video extrapolation, while achieving real-time generation at 23.8 FPS on a single GPU, 30-180× faster than existing baselines. Overall pipline is shown below:
+**FashionChameleon** consists of three components: **(i)** Teacher Model with In-Context Learning, **(ii)** Streaming Distillation with In-Context Learning, and **(iii)** Training-Free KV Cache Rescheduling. The overall pipeline is illustrated below:
 <img src="assets/overall_framework.png" style="width:100%; height:100%;"/>
 
 
@@ -71,7 +71,7 @@ Human-centric video customization, particularly at the garment level, has shown 
 
 
 ## 🤝 Acknowledgements
-This codebase borrows parts from [DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio), [Wan2.2](https://github.com/Wan-Video/Wan2.2), and [self-forcing](https://github.com/guandeh17/self-forcing). Many thanks to them for their open-source contributions.
+This codebase borrows parts from [DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio), [Wan2.2](https://github.com/Wan-Video/Wan2.2), and [Self-Forcing](https://github.com/guandeh17/self-forcing). Many thanks to them for their open-source contributions.
 
 
 ## 🎓 Bibtex
