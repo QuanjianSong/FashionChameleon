@@ -70,6 +70,9 @@ Human-centric video customization, particularly at the garment level, has shown 
 <img src="assets/application.png" style="width:100%; height:100%;"/>
 
 
+## 🤝 Acknowledgements
+This codebase borrows parts from [DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio), [Wan2.2](https://github.com/Wan-Video/Wan2.2), and [self-forcing](https://github.com/guandeh17/self-forcing). Many thanks to them for their open-source contributions.
+
 
 ## 🎓 Bibtex
 🤗 If you find this code helpful for your research, please cite:
