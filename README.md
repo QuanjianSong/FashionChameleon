@@ -61,7 +61,7 @@ It achieves real-time generation at 23.8 FPS on a single GPU.
 <img src="assets/overall_framework.png" style="width:100%; height:100%;"/>
 
 
-## 🔧 Environment
+## 🔧 Step0. Environment
 ```
 git clone https://github.com/QuanjianSong/FashionChameleon.git
 cd FashionChameleon
@@ -71,6 +71,14 @@ conda activate FashionChameleon
 pip install -r requirements.txt
 ```
 
+## 🔧 Step1. In-Context SFT  
+XXX
+
+## 🔧 Step2. In-Context Teacher Forcing
+XXX
+
+## 🔧 Step3. Gradient-Reweighted DMD
+XXX
 
 ## 🌈 Comparison
 <img src="assets/comparison.png" style="width:100%; height:100%;"/>
