@@ -19,7 +19,7 @@ FashionChameleon: Towards Real-Time and Interactive Human-Garment Video Customiz
         <img src='https://img.shields.io/badge/Hugging_Face-FashionChameleon-blue' alt='Hugging Face'></a> &emsp;  &emsp;
     </span>
     <span> 
-        <a href='' target="_blank"> 
+        <a href='https://huggingface.co/datasets/QuanjianSong/HGC-Bench' target="_blank"> 
         <img src='https://img.shields.io/badge/Hugging_Face-HGC--Bench-yellow' alt='HGC-Bench'></a> &emsp;  &emsp;
     </span>
 </p>
@@ -41,7 +41,7 @@ It achieves real-time generation at 23.8 FPS on a single GPU.
 - [ ] Release the checkpoint.
 - [ ] Release the code of post-training.
 - [ ] Release the code of pre-training.
-- [ ] Release the HGC-Bench.
+- [x] 🔥 Release the HGC-Bench.
 - [x] 🔥 Release the <a href="https://quanjiansong.github.io/projects/FashionChameleon/" target="_blank">project page</a>.
 - [x] 🔥 Release the <a href="https://arxiv.org/pdf/2605.15824" target="_blank">technical report</a>.
 
