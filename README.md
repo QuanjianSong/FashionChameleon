@@ -57,8 +57,19 @@ It achieves real-time generation at 23.8 FPS on a single GPU.
 
 
 ## 🎬 Overview
-**FashionChameleon** consists of three components: **(i)** Teacher Model with In-Context Learning, **(ii)** Streaming Distillation with In-Context Learning, and **(iii)** Training-Free KV Cache Rescheduling. The overall pipeline is illustrated below:
+**FashionChameleon** consists of three components: **(i)** Teacher Model with In-Context Learning, **(ii)** Streaming Distillation with In-Context Learning, and **(iii)** Training-Free KV Cache Rescheduling. Overall pipeline is shown below:
 <img src="assets/overall_framework.png" style="width:100%; height:100%;"/>
+
+
+## 🔧 Environment
+```
+git clone https://github.com/QuanjianSong/FashionChameleon.git
+cd FashionChameleon
+# Installation with the requirement.txt
+conda create -n FashionChameleon python=3.10
+conda activate FashionChameleon
+pip install -r requirements.txt
+```
 
 
 ## 🌈 Comparison
