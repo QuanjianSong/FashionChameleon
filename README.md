@@ -62,7 +62,8 @@ It achieves real-time generation at 23.8 FPS on a single GPU.
 <img src="assets/overall_framework.png" style="width:100%; height:100%;"/>
 
 
-## 🔧 Step0. Environment
+## 🔧 Step0. Setup
+### Prepare Environment
 ```
 git clone https://github.com/QuanjianSong/FashionChameleon.git
 cd FashionChameleon
@@ -71,12 +72,17 @@ conda create -n FashionChameleon python=3.10
 conda activate FashionChameleon
 pip install -r requirements.txt
 ```
+### Download Backbone
+Our FashionChameleon is built upon [Wan2.2-TI2V-5B](https://huggingface.co/Wan-AI/Wan2.2-TI2V-5B). You can run the following command to download the backbone weight:
+```
+huggingface-cli download Wan-AI/Wan2.2-TI2V-5B --local-dir-use-symlinks False --local-dir wan_models/Wan2.2-TI2V-5B
+```
 
 ## 🚀 Step1. In-Context SFT  
 ### Start Training
 You can run the following command to start training:
 
-```bash
+```
 CUDA_VISIBLE_DEVICES=4,5,6,7 torchrun --nproc_per_node 4 --master_port=8989 train.py \
     --config_path configs/sft_wan22_ic.yaml \
     --save_dir outputs/sft_wan22_ic
@@ -91,7 +97,7 @@ Our FashionChameleon keep a fixed training resolution of 1280 × 704 throughout 
 
 ### Start Inference
 You can run the following command to start training:
-```bash
+```
 CUDA_VISIBLE_DEVICES=1 python infer_ic.py --config_path configs/sft_wan22_ic.yaml \
     --seed 42 \
     --h 1280 \
