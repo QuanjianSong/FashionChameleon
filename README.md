@@ -104,7 +104,7 @@ or simple run:
 bash scripts/infer/infer_wan22_ic.sh
 ```
 The checkpoint represents the weights after SFT training.
-Our inference code by default processes data in the format of HGC-Bench. You can first download the dataset from [Hugging Face](https://huggingface.co/datasets/QuanjianSong/HGC-Bench).
+Our inference code by default processes data in the format of HGC-Bench. You can first download the test dataset from [Hugging Face](https://huggingface.co/datasets/QuanjianSong/HGC-Bench).
 
 <!-- ## 🔧 Step2-In-Context Teacher Forcing
 XXX
