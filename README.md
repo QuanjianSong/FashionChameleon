@@ -74,13 +74,36 @@ pip install -r requirements.txt
 ## 🔧 Step1-In-Context SFT  
 #### Training
 You can run the following command to start training:
+
 ```bash
 CUDA_VISIBLE_DEVICES=4,5,6,7 torchrun --nproc_per_node 4 --master_port=8989 train.py \
     --config_path configs/sft_wan22_ic.yaml \
     --save_dir outputs/sft_wan22_ic
 ```
+or simply run:
+```bash
+bash scripts/train/sft.sh
+```
 All training configurations are recorded in configs/sft_wan22_ic.yaml, which can be freely modified according to your needs.
 Note that our training framework supports both variable-resolution bucketing strategies and gradient accumulation. However, in FashionChameleon, we keep a fixed training resolution of 1280 × 704 throughout training.
+
+#### Inference
+You can run the following command to start training:
+```bash
+CUDA_VISIBLE_DEVICES=1 python infer_ic.py --config_path configs/sft_wan22_ic.yaml \
+    --seed 42 \
+    --h 1280 \
+    --w 704 \
+    --num_frames 81 \
+    --output_path samples/sft_wan22_ic/ \
+    --checkpoint XXX
+```
+or simple run:
+```bash
+bash scripts/infer/infer_ic.sh
+```
+The checkpoint represents the weights after SFT training.
+Our inference code by default processes data in the format of HGC-Bench. You can first download the dataset from [Hugging Face](https://huggingface.co/datasets/QuanjianSong/HGC-Bench).
 
 ## 🔧 Step2-In-Context Teacher Forcing
 XXX
