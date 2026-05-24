@@ -61,7 +61,7 @@ It achieves real-time generation at 23.8 FPS on a single GPU.
 <img src="assets/overall_framework.png" style="width:100%; height:100%;"/>
 
 
-## 🔧 Step0. Environment
+## 🔧 Step0-Environment
 ```
 git clone https://github.com/QuanjianSong/FashionChameleon.git
 cd FashionChameleon
@@ -71,13 +71,13 @@ conda activate FashionChameleon
 pip install -r requirements.txt
 ```
 
-## 🔧 Step1. In-Context SFT  
+## 🔧 Step1-In-Context SFT  
 XXX
 
-## 🔧 Step2. In-Context Teacher Forcing
+## 🔧 Step2-In-Context Teacher Forcing
 XXX
 
-## 🔧 Step3. Gradient-Reweighted DMD
+## 🔧 Step3-Gradient-Reweighted DMD
 XXX
 
 ## 🌈 Comparison
@@ -90,7 +90,7 @@ XXX
 
 
 ## 🤝 Acknowledgements
-This codebase borrows parts from [DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio), [Wan2.2](https://github.com/Wan-Video/Wan2.2), and [Self-Forcing](https://github.com/guandeh17/self-forcing). Many thanks to them for their open-source contributions.
+This codebase borrows parts from [Wan2.2](https://github.com/Wan-Video/Wan2.2) and [Self-Forcing](https://github.com/guandeh17/self-forcing). Many thanks to them for their open-source contributions.
 
 
 ## 🎓 Bibtex
