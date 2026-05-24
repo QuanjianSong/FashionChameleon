@@ -71,7 +71,7 @@ conda activate FashionChameleon
 pip install -r requirements.txt
 ```
 
-## 🔧 Step1-In-Context SFT  
+## 🚀 Step1-In-Context SFT  
 #### Training
 You can run the following command to start training:
 
@@ -105,11 +105,11 @@ bash scripts/infer/infer_ic.sh
 The checkpoint represents the weights after SFT training.
 Our inference code by default processes data in the format of HGC-Bench. You can first download the dataset from [Hugging Face](https://huggingface.co/datasets/QuanjianSong/HGC-Bench).
 
-## 🔧 Step2-In-Context Teacher Forcing
+<!-- ## 🔧 Step2-In-Context Teacher Forcing
 XXX
 
 ## 🔧 Step3-Gradient-Reweighted DMD
-XXX
+XXX -->
 
 ## 🌈 Comparison
 <img src="assets/comparison.png" style="width:100%; height:100%;"/>
