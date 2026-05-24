@@ -57,7 +57,7 @@ It achieves real-time generation at 23.8 FPS on a single GPU.
 
 
 ## 🎬 Overview
-**FashionChameleon** consists of: **(i)** Teacher Model with In-Context Learning, **(ii)** Streaming Distillation with In-Context Learning, and **(iii)** Training-Free KV Cache Rescheduling. Overall pipeline is shown below:
+**FashionChameleon** is built upon Wan2.2-TI2V-5B, featuring: **(i)** Teacher Model with In-Context Learning, **(ii)** Streaming Distillation with In-Context Learning, and **(iii)** Training-Free KV Cache Rescheduling. Overall pipeline is shown below:
 <img src="assets/overall_framework.png" style="width:100%; height:100%;"/>
 
 
