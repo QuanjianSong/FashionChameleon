@@ -39,6 +39,7 @@ It achieves real-time generation at 23.8 FPS on a single GPU.
 
 ## 📅 Todo
 - [ ] Release the checkpoint.
+- [ ] Release the training-free KV-cache rescheduling for interactive inference.
 - [ ] Release the code (Wan2.2-TI2V-5B) for post-training and the corresponding inference.
 - [x] 🔥 Release the code (Wan2.2-TI2V-5B) for pre-training and the corresponding inference.
 - [x] 🔥 Release the HGC-Bench.
