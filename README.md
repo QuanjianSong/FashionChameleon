@@ -72,8 +72,9 @@ conda create -n FashionChameleon python=3.10
 conda activate FashionChameleon
 pip install -r requirements.txt
 ```
+
 ### Download Backbone
-Our FashionChameleon is built upon [Wan2.2-TI2V-5B](https://huggingface.co/Wan-AI/Wan2.2-TI2V-5B). You can run the following command to download the backbone weight:
+Our FashionChameleon is built upon [Wan2.2-TI2V-5B](https://huggingface.co/Wan-AI/Wan2.2-TI2V-5B). You should first download the backbone weight by running:
 ```
 huggingface-cli download Wan-AI/Wan2.2-TI2V-5B --local-dir-use-symlinks False --local-dir wan_models/Wan2.2-TI2V-5B
 ```
@@ -81,7 +82,6 @@ huggingface-cli download Wan-AI/Wan2.2-TI2V-5B --local-dir-use-symlinks False --
 ## 🚀 Step1. In-Context SFT  
 ### Start Training
 You can run the following command to start training:
-
 ```
 CUDA_VISIBLE_DEVICES=4,5,6,7 torchrun --nproc_per_node 4 --master_port=8989 train.py \
     --config_path configs/sft_wan22_ic.yaml \
