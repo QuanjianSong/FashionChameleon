@@ -72,7 +72,7 @@ pip install -r requirements.txt
 ```
 
 ## 🚀 Step1-In-Context SFT  
-#### Training
+### Training
 You can run the following command to start training:
 
 ```bash
@@ -87,7 +87,7 @@ bash scripts/train/sft.sh
 All training configurations are recorded in configs/sft_wan22_ic.yaml, which can be freely modified according to your needs.
 Note that our training framework supports both variable-resolution bucketing strategies and gradient accumulation. However, in FashionChameleon, we keep a fixed training resolution of 1280 × 704 throughout training.
 
-#### Inference
+### Inference
 You can run the following command to start training:
 ```bash
 CUDA_VISIBLE_DEVICES=1 python infer_ic.py --config_path configs/sft_wan22_ic.yaml \
