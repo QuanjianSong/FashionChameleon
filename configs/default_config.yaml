@@ -7,6 +7,3 @@ i2v: false
 gc_interval: 30
 context_noise: 0
 causal: true
-
-prompt_name: MovieGenVideoBench
-prompt_path: prompts/MovieGenVideoBench.txt
