@@ -90,7 +90,7 @@ XXX
 
 
 ## 🤝 Acknowledgements
-This codebase borrows parts from [Wan2.2](https://github.com/Wan-Video/Wan2.2) and [Self-Forcing](https://github.com/guandeh17/self-forcing). Many thanks to them for their open-source contributions.
+This codebase borrows from [Wan2.2](https://github.com/Wan-Video/Wan2.2) and [Self-Forcing](https://github.com/guandeh17/self-forcing). Many thanks to them for open-source contributions.
 
 
 ## 🎓 Bibtex
