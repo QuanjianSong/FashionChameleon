@@ -1,6 +1,6 @@
 project: teacher_model_sft
 wandb_host: https://api.wandb.ai
-wandb_key: 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
+wandb_key: XXX
 logger_type: "wandb"
 
 generator_ckpt: ~
