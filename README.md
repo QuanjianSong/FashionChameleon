@@ -82,7 +82,7 @@ CUDA_VISIBLE_DEVICES=4,5,6,7 torchrun --nproc_per_node 4 --master_port=8989 trai
 ```
 or simply run:
 ```bash
-bash scripts/train/sft.sh
+bash scripts/train/sft_wan22_ic.sh
 ```
 All training configurations are recorded in configs/sft_wan22_ic.yaml, which can be freely modified according to your needs.
 Note that our training framework supports both variable-resolution bucketing strategies and gradient accumulation. However, in FashionChameleon, we keep a fixed training resolution of 1280 × 704 throughout training.
@@ -100,7 +100,7 @@ CUDA_VISIBLE_DEVICES=1 python infer_ic.py --config_path configs/sft_wan22_ic.yam
 ```
 or simple run:
 ```bash
-bash scripts/infer/infer_ic.sh
+bash scripts/infer/infer_wan22_ic.sh
 ```
 The checkpoint represents the weights after SFT training.
 Our inference code by default processes data in the format of HGC-Bench. You can first download the dataset from [Hugging Face](https://huggingface.co/datasets/QuanjianSong/HGC-Bench).
