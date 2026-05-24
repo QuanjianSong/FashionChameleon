@@ -84,8 +84,9 @@ or simply run:
 ```bash
 bash scripts/train/sft_wan22_ic.sh
 ```
-All training configurations are recorded in configs/sft_wan22_ic.yaml, which can be freely modified according to your needs.
-Note that our training framework supports both variable-resolution bucketing strategies and gradient accumulation. However, FashionChameleon keep a fixed training resolution of 1280 × 704 throughout training.
+All training configurations are recorded in `configs/sft_wan22_ic.yaml`, which can be freely modified according to your needs.
+Note that our training framework supports both **variable-resolution bucketing strategies** and **gradient accumulation**, you only need to adjust the corresponding `ASPECT_RATIO` and `grad_accum_steps` parameters.
+Our FashionChameleon keep a fixed training resolution of 1280 × 704 throughout training.
 
 ### Inference
 You can run the following command to start training:
