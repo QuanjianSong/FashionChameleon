@@ -40,7 +40,7 @@ It achieves real-time generation at 23.8 FPS on a single GPU.
 ## 📅 Todo
 - [ ] Release the checkpoint.
 - [ ] Release the training-free kv cache rescheduling for interactive inference.
-- [ ] Release the code (Wan2.2-TI2V-5B) for gradient-reweighted dmd with self-forcing and the corresponding inference.
+- [ ] Release the code (Wan2.2-TI2V-5B) for gradient-reweighted dmd and the corresponding inference.
 - [ ] Release the code (Wan2.2-TI2V-5B) for in-context teacher forcing and the corresponding inference.
 - [x] 🔥 Release the code (Wan2.2-TI2V-5B) for in-context sft and the corresponding inference.
 - [x] 🔥 Release the HGC-Bench.
