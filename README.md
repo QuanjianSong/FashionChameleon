@@ -72,7 +72,15 @@ pip install -r requirements.txt
 ```
 
 ## 🔧 Step1-In-Context SFT  
-XXX
+#### Training
+You can run the following command to start training:
+```bash
+CUDA_VISIBLE_DEVICES=4,5,6,7 torchrun --nproc_per_node 4 --master_port=8989 train.py \
+    --config_path configs/sft_wan22_ic.yaml \
+    --save_dir outputs/sft_wan22_ic
+```
+All training configurations are recorded in configs/sft_wan22_ic.yaml, which can be freely modified according to your needs.
+Note that our training framework supports both variable-resolution bucketing strategies and gradient accumulation. However, in FashionChameleon, we keep a fixed training resolution of 1280 × 704 throughout training.
 
 ## 🔧 Step2-In-Context Teacher Forcing
 XXX
