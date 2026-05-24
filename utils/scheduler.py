@@ -168,7 +168,7 @@ class FlowMatchScheduler():
             timestep = timestep.flatten(0, 1)
         self.sigmas = self.sigmas.to(noise.device)
         self.timesteps = self.timesteps.to(noise.device)
-        # breakpoint()
+
         timestep_id = torch.argmin(
             (self.timesteps.unsqueeze(0) - timestep.unsqueeze(1)).abs(), dim=1)
         sigma = self.sigmas[timestep_id].reshape(-1, 1, 1, 1)

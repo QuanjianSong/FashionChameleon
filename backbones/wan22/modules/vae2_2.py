@@ -865,7 +865,7 @@ def _video_vae_2_2(pretrained_path=None, z_dim=16, dim=160, device="cpu", **kwar
 
     # load checkpoint
     logging.info(f"loading {pretrained_path}")
-    # breakpoint()
+
     model.load_state_dict(
         torch.load(pretrained_path, map_location=device), assign=True)
 

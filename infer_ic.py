@@ -39,7 +39,8 @@ if args.checkpoint is not None:
 pipe = pipe.to(device="cuda", dtype=torch.float32)
 pipe.generator.to(torch.bfloat16)
 
-meta_data = pd.read_csv("./HGC-Bench/meta_data.csv")
+root_path = "./HGC-Bench/"
+meta_data = pd.read_csv(os.path.join(root_path, 'meta_data.csv'))
 
 for idx in range(len(meta_data)):
     try:
@@ -48,8 +49,8 @@ for idx in range(len(meta_data)):
         prompt = json.loads(row_data['prompt'])['caption']
         prompt = prompt['en_short']
 
-        src_path = row_data['src_image']
-        cloth_path = row_data['cloth_image']
+        src_path = os.path.join(root_path, row_data['src_image'])
+        cloth_path = os.path.join(root_path, row_data['cloth_image'])
 
         save_path = os.path.join(args.output_path, f'output_{idx}.mp4')
         if os.path.exists(save_path):
