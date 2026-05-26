@@ -114,7 +114,7 @@ bash scripts/infer/infer_wan22_ic.sh
 The `checkpoint` denotes the weights after in-context sft.
 Our inference code by default processes data in the format of HGC-Bench. You can first download the test dataset from [Hugging Face](https://huggingface.co/datasets/QuanjianSong/HGC-Bench).
 
-## 🧑‍🏫 Step2-In-Context Teacher Forcing
+## 🧑‍🏫 Step2. In-Context Teacher Forcing
 ### Start Training
 You can run the following command to start training:
 ```
