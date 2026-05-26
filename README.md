@@ -145,7 +145,7 @@ or simple run:
 ```bash
 bash scripts/infer/causal_infer_wan22_ic.sh
 ```
-The `checkpoint` denotes the weights after in-context teacher forcing training.
+The `checkpoint` denotes the weights after in-context teacher forcing.
 Our inference code by default processes data in the format of HGC-Bench. You can first download the test dataset from [Hugging Face](https://huggingface.co/datasets/QuanjianSong/HGC-Bench).
 
 <!-- ## 🔧 Step3-Gradient-Reweighted DMD -->
