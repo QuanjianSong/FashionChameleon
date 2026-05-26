@@ -3,7 +3,7 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 import argparse
 from trainer import SFTICTrainer
-# from trainer import TeacherForcingICTrainer
+from trainer import TeacherForcingICTrainer
 # from trainer import ScoreDistillationTrainer
 
 from omegaconf import OmegaConf
@@ -30,8 +30,8 @@ def main():
 
     if config.trainer == 'sft_ic':
         trainer = SFTICTrainer(config)
-    # elif config.trainer == 'teacher_forcing_ic':
-    #     trainer = TeacherForcingICTrainer(config)
+    elif config.trainer == 'teacher_forcing_ic':
+        trainer = TeacherForcingICTrainer(config)
     # elif config.trainer == 'score_distillation':
     #     trainer = ScoreDistillationTrainer(config)
     else:

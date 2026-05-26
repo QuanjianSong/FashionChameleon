@@ -11,8 +11,9 @@ class Wan22ICInferencePipeline(torch.nn.Module):
     def __init__(self, args):
         super().__init__()
         self.args = args
-        self.timestep_shift = getattr(args, "timestep_shift", 1.0)
-        # Step 1: Initialize all models
+        self.timestep_shift = getattr(args, "timestep_shift", 5.0)
+
+        # initialize all models
         self.generator_model_name = getattr(args, "generator_name", args.model_name)
         self.generator = WanDiffusionWrapper(
             **getattr(self.args, "model_kwargs", {}),
@@ -27,7 +28,9 @@ class Wan22ICInferencePipeline(torch.nn.Module):
             self.generator.model.requires_grad_(False)
 
         self.text_encoder = WanTextEncoder(model_name=self.args.model_name)
+        self.text_encoder.requires_grad_(False)
         self.vae = WanVAEWrapper(model_name=self.args.model_name)
+        self.vae.requires_grad_(False)
 
     def _configure_lora_for_model(self, transformer, model_name):
         """Configure LoRA for a WanDiffusionWrapper model"""
@@ -43,13 +46,11 @@ class Wan22ICInferencePipeline(torch.nn.Module):
 
         print(f"LoRA target modules for {model_name}: {len(target_linear_modules)} Linear layers")
 
-        # Create LoRA config
         peft_config = peft.LoraConfig(
             r=self.args.rank,
             lora_alpha=self.args.alpha,
             target_modules=target_linear_modules,
         )
-        # Apply LoRA to the transformer
         lora_model = peft.get_peft_model(transformer, peft_config)
 
         print('peft_config', peft_config)
@@ -57,6 +58,7 @@ class Wan22ICInferencePipeline(torch.nn.Module):
 
         return lora_model
 
+    @torch.no_grad()
     def inference(self, noise: torch.Tensor, text_prompts: List[str], src_data, cloth_data):
         conditional_dict = self.text_encoder(
             text_prompts=text_prompts
@@ -82,8 +84,10 @@ class Wan22ICInferencePipeline(torch.nn.Module):
                 temp_ts = timestep[:, :, None, None].expand(-1, -1, latents.shape[-2] // 2, latents.shape[-1] // 2)
                 temp_ts = temp_ts.reshape(temp_ts.shape[0], -1)
                 wan22_input_timestep = temp_ts.to(noise.device, dtype=torch.long)
-                conditional_dict['wan22_input_timestep'] = wan22_input_timestep
-                unconditional_dict['wan22_input_timestep'] = wan22_input_timestep
+            else:
+                wan22_input_timestep = None
+            conditional_dict['wan22_input_timestep'] = wan22_input_timestep
+            unconditional_dict['wan22_input_timestep'] = wan22_input_timestep
 
             with (
                     torch.amp.autocast('cuda', dtype=torch.bfloat16),

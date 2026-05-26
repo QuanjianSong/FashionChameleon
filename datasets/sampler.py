@@ -29,7 +29,7 @@ class BucketSampler(Sampler):
         for ratio, indices in self.bucket_indexs.items():
             if self.shuffle:
                 indices = [indices[i] for i in torch.randperm(len(indices), generator=g).tolist()]
-            
+
             all_batches.extend([
                 indices[i : i + self.batch_size * self.num_replicas][self.rank :: self.num_replicas]
                 for i in range(0, len(indices), self.batch_size * self.num_replicas)

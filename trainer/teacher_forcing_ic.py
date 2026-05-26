@@ -8,12 +8,10 @@ from utils.distributed import fsdp_wrap, fsdp_state_dict, launch_distributed_job
 from utils.util import set_seed
 import torch.distributed as dist
 from omegaconf import OmegaConf
-from models import DiffusionICModel
+from models import TeacherForcingICModel
 import torch
 import wandb
 from torch.utils.tensorboard import SummaryWriter
-import random
-import peft
 
 
 class Trainer:
@@ -26,7 +24,7 @@ class Trainer:
         # Initialize the distributed training environment (rank, seed, dtype, logging etc.)
         launch_distributed_job()
         self.global_rank = dist.get_rank()
-        self.dtype = torch.float32
+        self.dtype = torch.bfloat16 if config.mixed_precision else torch.float32
         self.device = torch.cuda.current_device()
         # configure logger
         self.configure_logger()
@@ -38,13 +36,8 @@ class Trainer:
         set_seed(config.seed + self.global_rank)
 
         ##############################################################################################################
-        self.model = DiffusionICModel(config, device=self.device)
+        self.model = TeacherForcingICModel(config, device=self.device)
         ##############################################################################################################
-
-        if self.config.use_lora:
-            if self.global_rank == 0:
-                print("Applying LoRA to models...")
-            self.model.generator.model = self._configure_lora_for_model(self.model.generator.model, "generator")
 
         self.model.generator = fsdp_wrap(
             self.model.generator,
@@ -59,56 +52,21 @@ class Trainer:
             wrap_strategy=config.text_encoder_fsdp_wrap_strategy,
             cpu_offload=getattr(config, "text_encoder_cpu_offload", False)
         )
-        self.model.vae = self.model.vae.to(device=self.device, dtype=torch.float32)
+        self.model.vae = self.model.vae.to(device=self.device, dtype=torch.bfloat16 if config.mixed_precision else torch.float32)
         if getattr(config, "generator_ckpt", False):
-            state_dict = torch.load(config.generator_ckpt, map_location="cpu")
+            state_dict = torch.load(config.generator_ckpt, map_location="cpu")[
+                'generator']
             self.model.generator.load_state_dict(
-                state_dict['generator'], strict=True
+                state_dict, strict=True
             )
-            self.step = state_dict['global_step']
             if self.global_rank == 0:
-                print(f"Loading pretrained generator from {self.config.generator_ckpt}, step={self.step}")
+                print(f"Loading pretrained generator from {self.config.generator_ckpt}")
         ##############################################################################################################
         # configure optimizers
-        self.generator_optimizer, self.scheduler = self.configure_optimizers() 
+        self.generator_optimizer = self.configure_optimizers() 
         # configure dataloader
         self.dataloader = self.configure_dataloader()
         ##############################################################################################################
-
-    def _configure_lora_for_model(self, transformer, model_name):
-        """Configure LoRA for a WanDiffusionWrapper model"""
-        # find all Linear modules in WanAttentionBlock modules
-        target_linear_modules = set()
-
-        # define the specific modules we want to apply LoRA to
-        adapter_target_modules = self.config.adapter_target_modules
-
-        for name, module in transformer.named_modules():
-            if module.__class__.__name__ in adapter_target_modules:
-                for full_submodule_name, submodule in module.named_modules(prefix=name):
-                    if isinstance(submodule, torch.nn.Linear):
-                        target_linear_modules.add(full_submodule_name)
-        
-        target_linear_modules = list(target_linear_modules)
-
-        if self.global_rank == 0:
-            print(f"LoRA target modules for {model_name}: {len(target_linear_modules)} Linear layers")
-        
-        # create LoRA config
-        peft_config = peft.LoraConfig(
-            r=self.config.rank,
-            lora_alpha=self.config.alpha,
-            target_modules=target_linear_modules,
-        )
-
-        # apply LoRA to the transformer
-        lora_model = peft.get_peft_model(transformer, peft_config)
-
-        if self.global_rank == 0:
-            print('peft_config', peft_config)
-            lora_model.print_trainable_parameters()
-
-        return lora_model
 
     def configure_logger(self):
         if self.global_rank == 0:
@@ -118,7 +76,7 @@ class Trainer:
                 self.logger = wandb.init(
                     project=self.config.project,
                     name=exp_name,
-                    dir="./logs",
+                    dir="/logs",
                     config=OmegaConf.to_container(self.config, resolve=True),
                     mode="online" if flag else "offline",
                 )
@@ -133,25 +91,14 @@ class Trainer:
 
     def configure_optimizers(self):
         generator_optimizer = torch.optim.AdamW(
-            [param for param in self.model.generator.parameters() if param.requires_grad],
+            [param for param in self.model.generator.parameters()
+             if param.requires_grad],
             lr=self.config.lr,
             betas=(self.config.beta1, self.config.beta2),
             weight_decay=self.config.weight_decay
         )
-        #
-        def lr_lambda(current_step):
-            if current_step < self.config.warmup_step:
-                return float(current_step) / float(max(1, self.config.warmup_step))
-            elif current_step >= self.config.warmup_step and current_step < self.config.decay_step:
-                return 1.0
-            else:
-                return 0.5
-        #
-        from torch.optim.lr_scheduler import LambdaLR
-        scheduler = LambdaLR(generator_optimizer, lr_lambda=lr_lambda)
-        print("Warmup steps:", self.config.warmup_step)
 
-        return generator_optimizer, scheduler
+        return generator_optimizer
 
     def configure_dataloader(self):
         # dataset
@@ -159,8 +106,8 @@ class Trainer:
             meta_paths=list(self.config.meta_paths),
             aspect_ratios=self.config.ASPECT_RATIO,
             num_frames=81,
-            mixed_caption=self.config.mixed_captions, # mixed captions
-        ) 
+            mixed_caption=self.config.mixed_captions, # long caption
+        )
         batch_sampler = BucketSampler(
             bucket_indexs=dataset.bucket_indexs,
             aspect_ratios=dataset.aspect_ratios,
@@ -189,6 +136,7 @@ class Trainer:
             "generator": generator_state_dict,
             "global_step": self.step,
         }
+
         if self.global_rank == 0:
             os.makedirs(os.path.join(self.config.save_dir,
                         f"checkpoint_model_{self.step:06d}"), exist_ok=True)
@@ -206,37 +154,33 @@ class Trainer:
 
         for _ in range(self.config.grad_accum_steps):
             batch = next(self.dataloader)
+
             text_prompts = batch["prompt"]
 
-            drop_ratio = 0.1
-            text_prompts = [prompt if random.random() > drop_ratio else '' for prompt in text_prompts]
-
-            video_data = batch["video"].to(
+            video_latent = batch["video"].to(
                 device=self.device, dtype=self.dtype
             )
-            src_data = batch["src_image"].to(
+            video_latent = self.model.vae.encode_to_latent(video_latent.permute(0, 2, 1, 3, 4))
+            src_latent = batch["src_image"].to(
                 device=self.device, dtype=self.dtype
             )
-            cloth_data = batch["cloth_image"].to(
+            src_latent = self.model.vae.encode_to_latent(src_latent.unsqueeze(2))
+            cloth_latent = batch["cloth_image"].to(
                 device=self.device, dtype=self.dtype
             )
-
-            # video_data: [batch_size, num_channels, num_frames, height, width]
-            video_data = self.model.vae.encode_to_latent(video_data.permute(0, 2, 1, 3, 4))
-            src_data = self.model.vae.encode_to_latent(src_data.unsqueeze(2))
-            cloth_data = self.model.vae.encode_to_latent(cloth_data.unsqueeze(2))
+            cloth_latent = self.model.vae.encode_to_latent(cloth_latent.unsqueeze(2))
 
             # extract the conditional infos
             with torch.no_grad():
                 conditional_dict = self.model.text_encoder(
                     text_prompts=text_prompts)
             # append condition
-            conditional_dict['src_data'] = src_data
-            conditional_dict['cloth_data'] = cloth_data
-            
+            conditional_dict['src_latent'] = src_latent
+            conditional_dict['cloth_latent'] = cloth_latent
+
             # store gradients for the generator (if training the generator)
             generator_loss, generator_log_dict = self.model.generator_loss(
-                clean_latent=video_data,
+                clean_latent=video_latent,
                 conditional_dict=conditional_dict,
             )
 
@@ -251,7 +195,7 @@ class Trainer:
         return {
             "generator_loss": mean_loss,
             "generator_grad_norm": grad_norm,
-            "generator_log_dict": generator_log_dict, # last mini_batch
+            "last_log_dict": generator_log_dict,
         }
 
     def train(self):
@@ -266,9 +210,6 @@ class Trainer:
             self.generator_optimizer.zero_grad(set_to_none=True)
             generator_log_dict = self.fwdbwd_one_step()
             self.generator_optimizer.step()
-            # additional
-            if self.scheduler is not None:
-                self.scheduler.step()
 
             # ---------------------------------------------------------------
             self.step += 1
@@ -305,10 +246,10 @@ class Trainer:
                 gc.collect()
                 torch.cuda.empty_cache()
                 # ------------------------------------------------------------
-                output = generator_log_dict["generator_log_dict"]["x0_pred"]
-                ground_truth = generator_log_dict["generator_log_dict"]["x0"]
+                output = generator_log_dict["last_log_dict"]["x0_pred"]
+                ground_truth = generator_log_dict["last_log_dict"]["x0"]
 
-                output_video = self.model.vae.decode_to_pixel(output.to(dtype=self.dtype))
+                output_video = self.model.vae.decode_to_pixel(output)
                 output_video = 255.0 * (output_video.cpu().numpy() * 0.5 + 0.5)
 
                 ground_truth_video = self.model.vae.decode_to_pixel(ground_truth.to(dtype=self.dtype))

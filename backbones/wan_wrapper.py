@@ -10,7 +10,7 @@ from .wan22.modules.t5 import umt5_xxl
 
 from .wan22.modules.vae2_2 import _video_vae_2_2
 from .wan22.modules.model import Wan22Model
-# from .wan22.modules.causal_model import CausalWan22Model
+from .wan22.modules.causal_model import CausalWan22Model
 
 
 class WanTextEncoder(torch.nn.Module):
@@ -228,6 +228,7 @@ class WanDiffusionWrapper(torch.nn.Module):
         concat_time_embeddings: Optional[bool] = False,
         clean_x: Optional[torch.Tensor] = None,
         aug_t: Optional[torch.Tensor] = None,
+        in_context_nums: Optional[int] = 2,
     ) -> torch.Tensor:
         prompt_embeds = conditional_dict["prompt_embeds"]
 
@@ -261,6 +262,7 @@ class WanDiffusionWrapper(torch.nn.Module):
                     seq_len=self.seq_len,
                     clean_x=clean_x.permute(0, 2, 1, 3, 4),
                     aug_t=aug_t,
+                    in_context_nums=in_context_nums,
                 ).permute(0, 2, 1, 3, 4)
             else:
                 if classify_mode:

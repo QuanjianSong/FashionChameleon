@@ -1,37 +1,41 @@
-project: teacher_model_sft
+project: streaming_distillation
 wandb_host: https://api.wandb.ai
 wandb_key: your_wandb_key
 logger_type: "wandb"
 
-generator_ckpt: ~
+generator_ckpt: your_teacher_model
 generator_fsdp_wrap_strategy: size
 real_score_fsdp_wrap_strategy: size
 fake_score_fsdp_wrap_strategy: size
 text_encoder_fsdp_wrap_strategy: size
-generator_type: bidirection
+generator_type: causal
 sharding_strategy: full
 model_name: wan_models/Wan2.2-TI2V-5B
 
-use_lora: false
+denoising_step_list:
+- 1000
+- 750
+- 500
+- 250
+warp_denoising_step: true # need to remove - 0 in denoising_step_list if warp_denoising_step is true
+ts_schedule: false
 num_train_timestep: 1000
 num_training_frames: 23
-num_frame_per_block: 23
+num_frame_per_block: 3
 timestep_shift: 5.0
 guidance_scale: 3.0
 denoising_loss_type: flow
 
 mixed_precision: true
 seed: 42
-lr: 1.0e-05
-beta1: 0.9
+lr: 1.0e-06
+beta1: 0.0
 beta2: 0.999
-max_grad_norm_generator: 1.0
+max_grad_norm_generator: 10
 batch_size: 1
 grad_accum_steps: 1
 log_iters: 100
-warmup_step: 100
-decay_step: 1100
-max_step: 5000
+max_step: 7000
 
 meta_paths: 
 - ./assets/examples/meta_train.csv
@@ -40,14 +44,15 @@ ASPECT_RATIO:
   "1.78":
     - 1280
     - 704
-mixed_captions: true
+mixed_captions: false
+dfake_gen_update_ratio: 5
 image_or_video_shape:
 - 1
 - 23
 - 48
 - 80
 - 44
-trainer: sft_ic
+trainer: teacher_forcing_ic
 gradient_checkpointing: true
 model_kwargs:
   timestep_shift: 5.0
