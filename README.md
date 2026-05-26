@@ -93,7 +93,7 @@ or simply run:
 bash scripts/train/sft_wan22_ic.sh
 ```
 All training configurations are recorded in `configs/sft_wan22_ic.yaml`, which can be freely modified according to your needs.
-Note that our training framework supports **variable-resolution bucketing strategies**, **gradient accumulation**, and **mixed captions**. you only need to adjust the corresponding `ASPECT_RATIO`, `grad_accum_steps`, and `mixed_captions` parameters accordingly.
+Note that our training framework supports **variable-resolution bucketing strategies**, **gradient accumulation**, and **mixed captions**; you only need to adjust the corresponding `ASPECT_RATIO`, `grad_accum_steps`, and `mixed_captions` parameters accordingly.
 Our FashionChameleon keeps a fixed training resolution of 1280 × 704 while simultaneously maintaining mixed captions during the in-context sft process.
 
 ### Start Inference
@@ -127,7 +127,7 @@ or simple run:
 bash scripts/train/tf_wan22_ic.sh
 ```
 All training configurations are recorded in `configs/tf_wan22_ic.yaml`, which can be freely modified according to your needs.
-Note that our training framework supports **variable-resolution bucketing strategies**, **gradient accumulation**, and **mixed captions**. you only need to adjust the corresponding `ASPECT_RATIO`, `grad_accum_steps`, and `mixed_captions` parameters accordingly.
+Note that our training framework supports **variable-resolution bucketing strategies**, **gradient accumulation**, and **mixed captions**; you only need to adjust the corresponding `ASPECT_RATIO`, `grad_accum_steps`, and `mixed_captions` parameters accordingly.
 Our FashionChameleon keeps a fixed training resolution of 1280 × 704 while simultaneously maintaining long caption during the in-context teacher forcing.
 
 ### Start Inference
