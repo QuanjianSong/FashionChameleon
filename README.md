@@ -87,7 +87,7 @@ export HF_ENDPOINT=https://hf-mirror.com
 huggingface-cli download openai/clip-vit-large-patch14 --local-dir-use-symlinks False --local-dir checkpoints/clip-vit-large-patch14
 ```
 
-As well as download the [PredictionHead](https://github.com/christophschuhmann) for aesthetic reward by running:
+As well as download the [PredictionHead](https://github.com/christophschuhmann) for aesthetic reward initialization by running:
 ```
 wget -c https://github.com/christophschuhmann/improved-aesthetic-predictor/blob/main/sac%2Blogos%2Bava1-l14-linearMSE.pth -O checkpoints/sac+logos+ava1-l14-linearMSE.pth
 ```
