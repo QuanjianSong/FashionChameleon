@@ -41,10 +41,19 @@ class Trainer:
         self.model = DiffusionICModel(config, device=self.device)
         ##############################################################################################################
 
-        if self.config.use_lora:
+        if getattr(config, "generator_ckpt", False): # resume
+            state_dict = torch.load(config.generator_ckpt, map_location="cpu")
+            self.model.generator.load_state_dict(
+                state_dict['generator'], strict=True
+            )
+            self.step = state_dict['global_step']
+            if self.global_rank == 0:
+                print(f"Loading pretrained generator from {self.config.generator_ckpt}, step={self.step}")
+
+        if getattr(config, "use_lora", False):
             if self.global_rank == 0:
                 print("Applying LoRA to models...")
-            self.model.generator.model = self._configure_lora_for_model(self.model.generator.model, "generator")
+            self.model.generator.model = self._configure_lora_for_model(self.model.generator.model, "teacher")
 
         self.model.generator = fsdp_wrap(
             self.model.generator,
@@ -60,14 +69,6 @@ class Trainer:
             cpu_offload=getattr(config, "text_encoder_cpu_offload", False)
         )
         self.model.vae = self.model.vae.to(device=self.device, dtype=torch.float32)
-        if getattr(config, "generator_ckpt", False):
-            state_dict = torch.load(config.generator_ckpt, map_location="cpu")
-            self.model.generator.load_state_dict(
-                state_dict['generator'], strict=True
-            )
-            self.step = state_dict['global_step']
-            if self.global_rank == 0:
-                print(f"Loading pretrained generator from {self.config.generator_ckpt}, step={self.step}")
         ##############################################################################################################
         # configure optimizers
         self.generator_optimizer, self.scheduler = self.configure_optimizers() 
@@ -81,7 +82,14 @@ class Trainer:
         target_linear_modules = set()
 
         # define the specific modules we want to apply LoRA to
-        adapter_target_modules = self.config.adapter_target_modules
+        if model_name == 'teacher':
+            adapter_target_modules = ['WanAttentionBlock']
+        elif model_name == 'generator':
+            adapter_target_modules = ['CausalWanAttentionBlock']
+        elif model_name == 'fake_score':
+            adapter_target_modules = ['WanAttentionBlock']
+        else:
+            raise ValueError(f"Invalid model name: {model_name}")
 
         for name, module in transformer.named_modules():
             if module.__class__.__name__ in adapter_target_modules:
@@ -97,10 +105,9 @@ class Trainer:
         # create LoRA config
         peft_config = peft.LoraConfig(
             r=self.config.rank,
-            lora_alpha=self.config.alpha,
+            lora_alpha=self.config.lora_alpha,
             target_modules=target_linear_modules,
         )
-
         # apply LoRA to the transformer
         lora_model = peft.get_peft_model(transformer, peft_config)
 
@@ -159,8 +166,9 @@ class Trainer:
             meta_paths=list(self.config.meta_paths),
             aspect_ratios=self.config.ASPECT_RATIO,
             num_frames=81,
-            mixed_caption=self.config.mixed_captions, # mixed captions
+            mixed_captions=self.config.mixed_captions, # mixed captions
         ) 
+        # batch_sampler
         batch_sampler = BucketSampler(
             bucket_indexs=dataset.bucket_indexs,
             aspect_ratios=dataset.aspect_ratios,
@@ -168,17 +176,20 @@ class Trainer:
             shuffle=True,
             seed=self.config.seed,
         )
+        # dataloader
         dataloader = torch.utils.data.DataLoader(
             dataset,
             batch_sampler=batch_sampler, 
             collate_fn=dataset.collate_fn,
             num_workers=16,
         )
-        #
+        # waiting
         if dist.is_initialized():
             dist.barrier()
+        # log
         if self.global_rank == 0:
             print("DATASET SIZE %d" % len(dataset))
+
         return cycle(dataloader)
 
     def save(self):
@@ -189,6 +200,7 @@ class Trainer:
             "generator": generator_state_dict,
             "global_step": self.step,
         }
+
         if self.global_rank == 0:
             os.makedirs(os.path.join(self.config.save_dir,
                         f"checkpoint_model_{self.step:06d}"), exist_ok=True)
@@ -201,35 +213,26 @@ class Trainer:
 
     def fwdbwd_one_step(self):
         self.model.eval()  # prevent any randomness (e.g. dropout)
-
         mean_loss = 0
 
         for _ in range(self.config.grad_accum_steps):
             batch = next(self.dataloader)
-            text_prompts = batch["prompt"]
 
             drop_ratio = 0.1
+            text_prompts = batch["prompt"]
             text_prompts = [prompt if random.random() > drop_ratio else '' for prompt in text_prompts]
-
-            video_data = batch["video"].to(
-                device=self.device, dtype=self.dtype
-            )
-            src_data = batch["src_image"].to(
-                device=self.device, dtype=self.dtype
-            )
-            cloth_data = batch["cloth_image"].to(
-                device=self.device, dtype=self.dtype
-            )
-
-            # video_data: [batch_size, num_channels, num_frames, height, width]
-            video_data = self.model.vae.encode_to_latent(video_data.permute(0, 2, 1, 3, 4))
-            src_data = self.model.vae.encode_to_latent(src_data.unsqueeze(2))
-            cloth_data = self.model.vae.encode_to_latent(cloth_data.unsqueeze(2))
+            video_data = batch["video"].to(device=self.device, dtype=self.dtype)
+            src_data = batch["src_image"].to(device=self.device, dtype=self.dtype)
+            cloth_data = batch["cloth_image"].to(device=self.device, dtype=self.dtype)
 
             # extract the conditional infos
             with torch.no_grad():
-                conditional_dict = self.model.text_encoder(
-                    text_prompts=text_prompts)
+                # video_data: [batch_size, num_channels, num_frames, height, width]
+                video_data = self.model.vae.encode_to_latent(video_data.permute(0, 2, 1, 3, 4))
+                src_data = self.model.vae.encode_to_latent(src_data.unsqueeze(2))
+                cloth_data = self.model.vae.encode_to_latent(cloth_data.unsqueeze(2))
+
+                conditional_dict = self.model.text_encoder(text_prompts=text_prompts)
             # append condition
             conditional_dict['src_data'] = src_data
             conditional_dict['cloth_data'] = cloth_data
@@ -256,7 +259,7 @@ class Trainer:
 
     def train(self):
         start_step = self.step
-        self.progress_bar = tqdm(range(self.step, self.config.max_step), initial=self.step, desc="Training")
+        self.progress_bar = tqdm(range(self.step, self.config.max_step), initial=self.step, desc="sft")
 
         while True:
             if self.step % self.config.gc_interval == 0:
@@ -306,19 +309,18 @@ class Trainer:
                 torch.cuda.empty_cache()
                 # ------------------------------------------------------------
                 output = generator_log_dict["generator_log_dict"]["x0_pred"]
+                output = self.model.vae.decode_to_pixel(output.to(dtype=self.dtype))
+                output = 255.0 * (output.cpu().numpy() * 0.5 + 0.5)
+
                 ground_truth = generator_log_dict["generator_log_dict"]["x0"]
-
-                output_video = self.model.vae.decode_to_pixel(output.to(dtype=self.dtype))
-                output_video = 255.0 * (output_video.cpu().numpy() * 0.5 + 0.5)
-
-                ground_truth_video = self.model.vae.decode_to_pixel(ground_truth.to(dtype=self.dtype))
-                ground_truth_video = 255.0 * (ground_truth_video.cpu().numpy() * 0.5 + 0.5)
+                ground_truth = self.model.vae.decode_to_pixel(ground_truth.to(dtype=self.dtype))
+                ground_truth = 255.0 * (ground_truth.cpu().numpy() * 0.5 + 0.5)
 
                 if self.global_rank == 0:
-                    self.logger.log({"video": wandb.Video(output_video, caption="Output", fps=16, format="mp4"), "video_gt": wandb.Video(ground_truth_video, caption="Ground Truth", fps=16, format="mp4")})
+                    self.logger.log({"video": wandb.Video(output, caption="Output", fps=24, format="mp4"), "video_gt": wandb.Video(ground_truth, caption="Ground Truth", fps=24, format="mp4")})
                 if dist.is_initialized():
                     dist.barrier()
-
+                # ------------------------------------------------------------
                 gc.collect()
                 torch.cuda.empty_cache()
 

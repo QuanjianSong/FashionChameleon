@@ -14,7 +14,7 @@ from .wan22.modules.causal_model import CausalWan22Model
 
 
 class WanTextEncoder(torch.nn.Module):
-    def __init__(self, model_name="./wan_models/Wan2.2-TI2V-5B") -> None:
+    def __init__(self, model_name="./checkpoints/wan_models/Wan2.2-TI2V-5B") -> None:
         super().__init__()
         self.model_name = model_name
 
@@ -52,7 +52,7 @@ class WanTextEncoder(torch.nn.Module):
 
 
 class WanVAEWrapper(torch.nn.Module):
-    def __init__(self, model_name="./wan_models/Wan2.2-TI2V-5B"):
+    def __init__(self, model_name="./checkpoints/wan_models/Wan2.2-TI2V-5B"):
         super().__init__()
         self.model_name = model_name
 
@@ -131,7 +131,7 @@ class WanVAEWrapper(torch.nn.Module):
 class WanDiffusionWrapper(torch.nn.Module):
     def __init__(
             self,
-            model_name="./wan_models/Wan2.2-TI2V-5B",
+            model_name="./checkpoints/wan_models/Wan2.2-TI2V-5B",
             timestep_shift=5.0,
             is_causal=False,
             seq_list=[1, 23, 48, 80, 44],

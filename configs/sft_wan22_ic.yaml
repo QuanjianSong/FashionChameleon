@@ -10,7 +10,7 @@ fake_score_fsdp_wrap_strategy: size
 text_encoder_fsdp_wrap_strategy: size
 generator_type: bidirection
 sharding_strategy: full
-model_name: wan_models/Wan2.2-TI2V-5B
+model_name: checkpoints/wan_models/Wan2.2-TI2V-5B
 
 use_lora: false
 num_train_timestep: 1000
@@ -52,3 +52,5 @@ gradient_checkpointing: true
 model_kwargs:
   timestep_shift: 5.0
 local_attn_size: -1
+rank: 128
+lora_alpha: 128

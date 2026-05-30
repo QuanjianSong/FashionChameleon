@@ -34,7 +34,7 @@ class BucketSampler(Sampler):
                 indices[i : i + self.batch_size * self.num_replicas][self.rank :: self.num_replicas]
                 for i in range(0, len(indices), self.batch_size * self.num_replicas)
                 if len(indices[i : i + self.batch_size * self.num_replicas]) == self.batch_size * self.num_replicas
-            ])
+            ]) # drop last
 
         # 随机打乱batch顺序
         for i in torch.randperm(len(all_batches), generator=g).tolist():

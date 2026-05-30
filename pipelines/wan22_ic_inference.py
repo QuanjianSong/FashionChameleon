@@ -21,10 +21,11 @@ class Wan22ICInferencePipeline(torch.nn.Module):
             seq_list=list(self.args.image_or_video_shape),
             is_causal=False,
         )
+        self.generator.requires_grad_(False)
 
         if self.args.use_lora:
             print("Applying LoRA to models...")
-            self.generator.model = self._configure_lora_for_model(self.generator.model, "generator")
+            self.generator.model = self._configure_lora_for_model(self.generator.model, "teacher")
             self.generator.model.requires_grad_(False)
 
         self.text_encoder = WanTextEncoder(model_name=self.args.model_name)
@@ -34,9 +35,19 @@ class Wan22ICInferencePipeline(torch.nn.Module):
 
     def _configure_lora_for_model(self, transformer, model_name):
         """Configure LoRA for a WanDiffusionWrapper model"""
+        # Find all Linear modules in WanAttentionBlock modules
         target_linear_modules = set()
         
-        adapter_target_modules = self.args.adapter_target_modules
+        # Define the specific modules we want to apply LoRA to
+        if model_name == 'teacher':
+            adapter_target_modules = ['WanAttentionBlock']
+        elif model_name == 'generator':
+            adapter_target_modules = ['CausalWanAttentionBlock']
+        elif model_name == 'fake_score':
+            adapter_target_modules = ['WanAttentionBlock']
+        else:
+            raise ValueError(f"Invalid model name: {model_name}")
+
         for name, module in transformer.named_modules():
             if module.__class__.__name__ in adapter_target_modules:
                 for full_submodule_name, submodule in module.named_modules(prefix=name):
@@ -46,11 +57,13 @@ class Wan22ICInferencePipeline(torch.nn.Module):
 
         print(f"LoRA target modules for {model_name}: {len(target_linear_modules)} Linear layers")
 
+        # create LoRA config
         peft_config = peft.LoraConfig(
             r=self.args.rank,
-            lora_alpha=self.args.alpha,
+            lora_alpha=self.args.lora_alpha,
             target_modules=target_linear_modules,
         )
+        # apply LoRA to the transformer
         lora_model = peft.get_peft_model(transformer, peft_config)
 
         print('peft_config', peft_config)

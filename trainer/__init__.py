@@ -1,11 +1,11 @@
 
 from .sft_ic import Trainer as SFTICTrainer
-from .teacher_forcing_ic import Trainer as TeacherForcingICTrainer
-# from .distillation import Trainer as ScoreDistillationTrainer
+from .tf_ic import Trainer as TeacherForcingICTrainer
+from .distill_ic import Trainer as GradientReweightedScoreDistillationTrainer
 
 
 __all__ = [
     "SFTICTrainer",
     "TeacherForcingICTrainer",
-    # "ScoreDistillationTrainer",
+    "GradientReweightedScoreDistillationTrainer",
 ]

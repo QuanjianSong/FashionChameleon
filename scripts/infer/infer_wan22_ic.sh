@@ -1,6 +1,6 @@
 export PYTHONPATH=$(pwd)
 
-CUDA_VISIBLE_DEVICES=1 python infer_ic.py --config_path configs/sft_wan22_ic.yaml \
+CUDA_VISIBLE_DEVICES=1 python predictor/infer_ic.py --config_path configs/sft_wan22_ic.yaml \
     --seed 42 \
     --h 1280 \
     --w 704 \

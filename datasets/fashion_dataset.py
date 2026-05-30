@@ -1,6 +1,6 @@
 import os
 
-from torch.utils.data import Dataset, RandomSampler
+from torch.utils.data import Dataset
 import torch
 
 import json
@@ -61,7 +61,7 @@ class FashionVideoDataset(Dataset):
         meta_paths,
         aspect_ratios={'1.78': [1280.0, 704.0],},
         num_frames=81,
-        mixed_caption=False,
+        mixed_captions=False,
     ):
         self.meta_data = pd.concat(
             [pd.read_csv(p)[['video', 'prompt', 'width', 'height']] for p in meta_paths],
@@ -70,7 +70,7 @@ class FashionVideoDataset(Dataset):
 
         self.aspect_ratios = aspect_ratios
         self.num_frames = num_frames
-        self.mixed_caption = mixed_caption
+        self.mixed_captions = mixed_captions
 
         self.transforms = {
             str(ratio): transforms.Compose([
@@ -90,7 +90,7 @@ class FashionVideoDataset(Dataset):
             for ratio, hw in aspect_ratios.items()
         }
 
-        # ✅ 初始化时分桶
+        # 初始化时分桶
         self.bucket_indexs = self._build_bucket_indexs()
 
     def _build_bucket_indexs(self):
@@ -105,13 +105,13 @@ class FashionVideoDataset(Dataset):
 
         return bucket_indexs
 
-    def _get_closest_ratio(self, idx) -> str:
+    def _get_closest_ratio(self, idx):
         row = self.meta_data.iloc[idx]
         w, h = row.get("width"), row.get("height")
         ratio   = int(h) / int(w)
         closest = min(self.aspect_ratios.keys(), key=lambda r: abs(float(r) - ratio))
 
-        return str(closest)
+        return row, str(closest)
 
     def __len__(self):
         return sum(len(v) for v in self.bucket_indexs.values())
@@ -152,13 +152,12 @@ class FashionVideoDataset(Dataset):
     def __getitem__(self, idx):
         while True:
             try:
-                row_data = self.meta_data.iloc[idx]
-                closest_ratio = self._get_closest_ratio(idx)
+                row_data, closest_ratio = self._get_closest_ratio(idx)
 
                 prompts = json.loads(row_data['prompt'])
                 prompts = self.complete_fields(prompts)
 
-                if not self.mixed_caption: # post-training
+                if not self.mixed_captions: # post-training
                     prompt = prompts["en_long"][0] + " " + prompts["en_long"][1]
                 else: # pre-training 
                     if random.random() < 0.7:

@@ -4,7 +4,7 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 import argparse
 from trainer import SFTICTrainer
 from trainer import TeacherForcingICTrainer
-# from trainer import ScoreDistillationTrainer
+from trainer import GradientReweightedScoreDistillationTrainer
 
 from omegaconf import OmegaConf
 
@@ -32,8 +32,8 @@ def main():
         trainer = SFTICTrainer(config)
     elif config.trainer == 'teacher_forcing_ic':
         trainer = TeacherForcingICTrainer(config)
-    # elif config.trainer == 'score_distillation':
-    #     trainer = ScoreDistillationTrainer(config)
+    elif config.trainer == 'gradient_reweighted_score_distillation':
+        trainer = GradientReweightedScoreDistillationTrainer(config)
     else:
         raise NotImplementedError
 
