@@ -74,7 +74,7 @@ conda activate FashionChameleon
 pip install -r requirements.txt
 ```
 
-### Download Backbone
+### Download Backbones
 Our FashionChameleon is built upon [Wan2.2-TI2V-5B](https://huggingface.co/Wan-AI/Wan2.2-TI2V-5B). You should first download the backbone weight by running:
 ```
 export HF_ENDPOINT=https://hf-mirror.com
