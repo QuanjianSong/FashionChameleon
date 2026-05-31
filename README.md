@@ -207,7 +207,6 @@ Our inference code by default processes data in the format of HGC-Bench. You can
 <img src="assets/comparison.png" style="width:100%; height:100%;"/>
 
 
-
 ## 🌊 Application
 <img src="assets/application.png" style="width:100%; height:100%;"/>
 
