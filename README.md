@@ -151,7 +151,7 @@ CUDA_VISIBLE_DEVICES=1 python predictor/causal_infer_ic.py --config_path configs
     --seed 42 \
     --h 1280 \
     --w 704 \
-    --num_frames 81 \ # or longer
+    --num_frames 81 \
     --output_path samples/tf_wan22_ic/ \
     --checkpoint XXX
 ```
@@ -185,7 +185,7 @@ CUDA_VISIBLE_DEVICES=1 python predictor/stream_infer_ic.py --config_path configs
     --seed 42 \
     --h 1280 \
     --w 704 \
-    --num_frames 81 \ # or longer
+    --num_frames 81 \
     --output_path samples/gr_dmd_wan22_ic_reward/ \
     --checkpoint XXX
 ```
@@ -197,7 +197,7 @@ The `checkpoint` denotes the weights after gradient-reweighted dmd with self-for
 Our inference code by default processes data in the format of HGC-Bench. You can first download the test dataset from [Hugging Face](https://huggingface.co/datasets/QuanjianSong/HGC-Bench).
 
 
-<!-- ## 🔧 KV cache rescheduling for interactive customization -->
+<!-- ## 🔧 KV Cache Rescheduling for Interactive Customization -->
 
 
 ## 🌈 Comparison
