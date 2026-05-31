@@ -151,7 +151,7 @@ CUDA_VISIBLE_DEVICES=1 python predictor/causal_infer_ic.py --config_path configs
     --seed 42 \
     --h 1280 \
     --w 704 \
-    --num_frames 81 \
+    --num_frames 81 \ # or longer
     --output_path samples/tf_wan22_ic/ \
     --checkpoint XXX
 ```
@@ -185,7 +185,7 @@ CUDA_VISIBLE_DEVICES=1 python predictor/stream_infer_ic.py --config_path configs
     --seed 42 \
     --h 1280 \
     --w 704 \
-    --num_frames 81 \
+    --num_frames 81 \ # or longer
     --output_path samples/gr_dmd_wan22_ic_reward/ \
     --checkpoint XXX
 ```
