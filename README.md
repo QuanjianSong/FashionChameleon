@@ -112,7 +112,8 @@ Our FashionChameleon keeps a fixed training resolution of 1280 × 704 while simu
 ### Start Inference
 You can run the following command to start bidirectional inference:
 ```
-CUDA_VISIBLE_DEVICES=1 python predictor/infer_ic.py --config_path configs/sft_wan22_ic.yaml \
+CUDA_VISIBLE_DEVICES=1 python predictor/infer_ic.py \
+    --config_path configs/sft_wan22_ic.yaml \
     --seed 42 \
     --h 1280 \
     --w 704 \
@@ -147,7 +148,8 @@ Our FashionChameleon keeps a fixed training resolution of 1280 × 704 while simu
 ### Start Inference
 You can run the following command to start causal inference:
 ```
-CUDA_VISIBLE_DEVICES=1 python predictor/causal_infer_ic.py --config_path configs/tf_wan22_ic.yaml \
+CUDA_VISIBLE_DEVICES=1 python predictor/causal_infer_ic.py \
+    --config_path configs/tf_wan22_ic.yaml \
     --seed 42 \
     --h 1280 \
     --w 704 \
@@ -181,7 +183,8 @@ Our FashionChameleon keeps a fixed training resolution of 1280 × 704 while simu
 ### Start Inference
 You can run the following command to start stream inference:
 ```
-CUDA_VISIBLE_DEVICES=1 python predictor/stream_infer_ic.py --config_path configs/gr_dmd_wan22_ic.yaml \
+CUDA_VISIBLE_DEVICES=1 python predictor/stream_infer_ic.py \
+    --config_path configs/gr_dmd_wan22_ic.yaml \
     --seed 42 \
     --h 1280 \
     --w 704 \

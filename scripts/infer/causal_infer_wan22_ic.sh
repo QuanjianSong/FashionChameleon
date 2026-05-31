@@ -1,6 +1,7 @@
 export PYTHONPATH=$(pwd)
 
-CUDA_VISIBLE_DEVICES=1 python predictor/causal_infer_ic.py --config_path configs/tf_wan22_ic.yaml \
+CUDA_VISIBLE_DEVICES=1 python predictor/causal_infer_ic.py \
+    --config_path configs/tf_wan22_ic.yaml \
     --seed 42 \
     --h 1280 \
     --w 704 \
