@@ -4,6 +4,8 @@
 FashionChameleon: Towards Real-Time and Interactive Human-Garment Video Customization
 </h1>
 
+
+
 <p align="center">
     <span>
         <a href="https://arxiv.org/pdf/2605.15824" target="_blank"> 
@@ -26,13 +28,16 @@ FashionChameleon: Towards Real-Time and Interactive Human-Garment Video Customiz
 
 <br/>
 
+<strong>
+The remaining KV-cache rescheduling code and model weights will be released gradually over the next month. Stay tuned～
+</strong>
+
 <div align="center">
 <b>TL;DR:</b><br/>
 We propose <span className="text-white font-medium">FashionChameleon</span>, a real-time and interactive framework for human-garment customization in streaming autoregressive video generation.  
 It achieves real-time generation at 23.8 FPS on a single GPU.
 </div>
 <img src="assets/teaser.png" style="width:100%; height:100%;"/>
-
 
 </div>
 
