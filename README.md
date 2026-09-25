@@ -18,7 +18,7 @@ FashionChameleon: Towards Real-Time and Interactive Human-Garment Video Customiz
     <br>
     <span> 
         <a href='https://huggingface.co/papers/2605.15824' target="_blank"> 
-        <img src='https://img.shields.io/badge/Hugging_Face-FashionChameleon-blue' alt='Hugging Face'></a> &emsp;  &emsp;
+        <img src='https://img.shields.io/badge/Hugging_Face-Checkpoint-blue' alt='Hugging Face'></a> &emsp;  &emsp;
     </span>
     <span> 
         <a href='https://huggingface.co/datasets/QuanjianSong/HGC-Bench' target="_blank"> 
