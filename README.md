@@ -29,7 +29,7 @@ FashionChameleon: Towards Real-Time and Interactive Human-Garment Video Customiz
 <br/>
 
 <strong>
-The remaining KV-cache rescheduling code and model weights will be released gradually over the next month. Stay tuned～
+🌟🌟🌟🌟🌟 The remaining KV-cache rescheduling code and model weights will be released gradually over the next month. Stay tuned～
 </strong>
 
 <div align="center">
