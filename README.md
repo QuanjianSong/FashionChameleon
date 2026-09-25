@@ -28,9 +28,6 @@ FashionChameleon: Towards Real-Time and Interactive Human-Garment Video Customiz
 
 <br/>
 
-<strong>
-🌟🌟🌟🌟🌟 The remaining KV-cache rescheduling code and model weights will be released gradually over the next month. Stay tuned～
-</strong>
 
 <div align="center">
 <b>TL;DR:</b><br/>
@@ -43,6 +40,7 @@ It achieves real-time generation at 23.8 FPS on a single GPU.
 
 
 ## 📅 Todo
+🌟🌟🌟🌟🌟 The remaining KV-cache rescheduling code and model weights will be released gradually over the next month. Stay tuned～
 - [ ] Release the checkpoint.
 - [ ] Release the training-free kv cache rescheduling for interactive inference.
 - [x] 🔥 Release the code (Wan2.2-TI2V-5B) for gradient-reweighted dmd and the corresponding inference.
