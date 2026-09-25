@@ -42,7 +42,7 @@ It achieves real-time generation at 23.8 FPS on a single GPU.
 ## 📅 Todo
 🌟🌟🌟🌟🌟 The remaining KV-cache rescheduling code and model weights will be released gradually over the next month. Stay tuned～
 - [ ] Release the checkpoint of our FashionChameleon.
-- [ ] Release the code of training-free kv cache rescheduling for interactive inference.
+- [ ] Release the code (Wan2.2-TI2V-5B) of training-free kv cache rescheduling for interactive inference.
 - [x] 🔥 Release the code (Wan2.2-TI2V-5B) for gradient-reweighted dmd and the corresponding inference.
 - [x] 🔥 Release the code (Wan2.2-TI2V-5B) for in-context teacher forcing and the corresponding inference.
 - [x] 🔥 Release the code (Wan2.2-TI2V-5B) for in-context sft and the corresponding inference.
